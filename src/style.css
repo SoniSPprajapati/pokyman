@@ -4,6 +4,11 @@
   font-family: "Moderustic", sans-serif;
 }
 
+.input-group {
+  margin: 5px;
+  padding: 10px;
+}
+
 body {
   background: linear-gradient(90deg, #e0f7fa, #f1f8e9, #ffebee, #f3e5f5);
   background-size: 400% 400%;
