@@ -1,44 +1,49 @@
+import { shuffle } from "fast-shuffle";
+import Fuse from "fuse.js";
+
 import data from "./data.json";
-// Dom Targeting
-const cardRow = document.querySelector("#card-row");
+import { PokemonCard } from "./components/PokemonCard";
+
+// DOM TARGETING
 const inputEl = document.querySelector("input");
+const cardsRowEl = document.querySelector("#cards-row");
 
-for (let pokomonobj of data) {
-  const div = document.createElement("div");
-  div.classList.add("col");
+function renderPokemon(list) {
+  console.log(list);
+  cardsRowEl.innerHTML = "";
 
-  div.innerHTML = `
-          <div class="card">
-            <img
-              src="${pokomonobj.image}"
-              class="card-img-top"
-              alt="..."
-            />
-            <div class="card-body">
-              <h5 class="card-title">${pokomonobj.name}</h5>
-              <p class="card-text">
-                ${pokomonobj.description}
-              </p>
-            </div>
-          </div>
-        
-      </div>`;
-  cardRow.appendChild(div);
+  for (let pokeObj of list) {
+    const pokemon = PokemonCard(
+      pokeObj.image,
+      pokeObj.name,
+      pokeObj.description,
+      pokeObj.link
+    );
+    cardsRowEl.appendChild(pokemon);
+  }
 }
 
-console.log(cardRow);
+function renderFilteredPokemon(term) {
+  const fuse = new Fuse(data, {
+    keys: ["name"],
+  });
 
-// fetch the name
-for (let pokomonobj of data) {
-  console.log(pokomonobj.name);
+  const filtered = fuse.search(term).map((obj) => obj.item);
+
+  renderPokemon(filtered);
 }
 
-console.log(inputEl);
+// Input element on change
+inputEl.addEventListener("input", (event) => {
+  const currValue = event.target.value.toLowerCase().trim();
+  renderFilteredPokemon(currValue);
+});
 
-// inputEl.focus();
-document.addEventListener("keypress", function (event) {
+// Focus input on slash keypress
+document.addEventListener("keyup", (event) => {
   if (event.key === "/") {
-    event.preventDefault();
     inputEl.focus();
   }
 });
+
+renderPokemon(shuffle(data));

@@ -4,12 +4,14 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-   "start": "parcel src/index.html"
+    "start": "parcel src/index.html"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "fast-shuffle": "^6.1.0",
+    "fuse.js": "^7.0.0",
     "parcel": "^2.12.0"
   }
 }
